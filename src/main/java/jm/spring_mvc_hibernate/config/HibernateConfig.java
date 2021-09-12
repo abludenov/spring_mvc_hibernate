@@ -100,7 +100,6 @@ public class HibernateConfig {
     }
 
 
-
     @Bean
     public HibernateTransactionManager getTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();

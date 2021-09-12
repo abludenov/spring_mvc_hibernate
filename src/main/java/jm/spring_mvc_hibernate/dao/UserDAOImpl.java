@@ -5,12 +5,12 @@ import jm.spring_mvc_hibernate.model.User;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -33,13 +33,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void saveUser(User user) {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
-    }
-
-    @Override
-    public void updateUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
+        session.saveOrUpdate(user);
     }
 
     @Override
@@ -50,9 +44,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(int id) {
         Session session = sessionFactory.getCurrentSession();
-        session.delete(user);
+        Query<User> query = session.createQuery("DELETE from User " + "where id = :userId");
+        query.setParameter("userId", id);
+        query.executeUpdate();
     }
 
 //    @PersistenceContext
