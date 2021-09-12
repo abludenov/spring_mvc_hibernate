@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.Valid;
 
 @Controller
@@ -23,7 +24,7 @@ public class UserController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", userService.getAllUsers());
         return "users/index";
     }
 
@@ -34,16 +35,16 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newPerson(@ModelAttribute("user") User user) {
         return "users/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors())
             return "users/new";
-        }
+
         userService.saveUser(user);
         return "redirect:/users";
     }
@@ -55,19 +56,18 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult,
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") int id) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors())
             return "users/edit";
-        }
-        userService.saveUser(user);
+
+        userService.updateUser(user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        userService.deleteUser(id);
+        userService.deleteUser(userService.getUser(id));
         return "redirect:/users";
     }
 }

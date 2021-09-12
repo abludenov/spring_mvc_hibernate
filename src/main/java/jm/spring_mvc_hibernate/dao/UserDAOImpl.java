@@ -1,12 +1,17 @@
 package jm.spring_mvc_hibernate.dao;
 
+
 import jm.spring_mvc_hibernate.model.User;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -28,7 +33,13 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void saveUser(User user) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(user);
+        session.persist(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        session.update(user);
     }
 
     @Override
@@ -39,10 +50,37 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(User user) {
         Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("DELETE FROM User " + "where id = :userId");
-        query.setParameter("userId", id);
-        query.executeUpdate();
+        session.delete(user);
     }
+
+//    @PersistenceContext
+//    private EntityManager entityManager;
+//
+//
+//    @Override
+//    public List<User> getAllUsers() {
+//        return entityManager.createQuery("from User", User.class).getResultList();
+//    }
+//
+//    @Override
+//    public void saveUser(User user) {
+//        entityManager.persist(user);
+//    }
+//
+//    @Override
+//    public User getUser(int id) {
+//        TypedQuery<User> query = entityManager.createQuery("select user from User user where user.id = :id", User.class);
+//        query.setParameter("id", id);
+//        return query.getResultList().stream().findAny().orElse(null);
+//    }
+//
+//    @Override
+//    public void deleteUser(int id) {
+//        entityManager.getTransaction().begin();
+//        User user = entityManager.find(User.class, id);
+//        entityManager.remove(user);
+//        entityManager.getTransaction().commit();
+//    }
 }

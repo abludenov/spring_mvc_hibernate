@@ -11,10 +11,6 @@
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
     <br/>
-    <label for="surname">Enter surname: </label>
-    <input type="text" th:field="*{surname}" id="surname"/>
-    <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname Error</div>
-    <br/>
     <label for="age">Enter age: </label>
     <input type="text" th:field="*{age}" id="age"/>
     <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
@@ -25,6 +21,7 @@
     <br/>
     <input type="submit" value="Update!"/>
 </form>
-
+<br/>
+<a href="/users">Menu</a>
 </body>
 </html>
